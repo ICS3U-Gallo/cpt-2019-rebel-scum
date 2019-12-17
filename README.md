@@ -1,4 +1,4 @@
-# Program Title (replace)
+# Star Wars: A New Game
 Program description. Replace with description of your program. Give a description of each scene.
 
 ### Group Members:
