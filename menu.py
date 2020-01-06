@@ -5,7 +5,7 @@ import settings
 
 class MenuView(arcade.View):
     def on_show(self):
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.draw_texture_rectangle("images/starwars.jpg")
 
     def on_draw(self):
         arcade.start_render()
