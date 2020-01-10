@@ -1,9 +1,8 @@
 import arcade
 
-import settings
-
 WIDTH = 800
 HEIGHT = 600
+MOVEMENT_SPEED = 8
 
 
 class MyGame(arcade.Window):
@@ -18,7 +17,7 @@ class MyGame(arcade.Window):
     def setup(self):
         self.player = arcade.Sprite(filename="Pictures/white.png",
                                     center_x=700,
-                                    center_y=200,
+                                    center_y=150,
                                     scale=0.5)
 
     def on_draw(self):
@@ -26,11 +25,14 @@ class MyGame(arcade.Window):
 
         # Draw everything below here.
         self.player.draw()
-        arcade.draw_rectangle_filled(300, 50, 600, 70, arcade.color.BRONZE)
-        arcade.draw_rectangle_filled(300, 200, 600, 70, arcade.color.BRONZE)
-        arcade.draw_rectangle_filled(300, 350, 600, 70, arcade.color.BRONZE)
-        arcade.draw_rectangle_filled(300, 500, 600, 70, arcade.color.BRONZE)
+        arcade.draw_triangle_filled(0, 0, 0, 600, 300, 600, arcade.color.BLUE_SAPPHIRE)
+        arcade.draw_triangle_filled(800, 0, 800, 600, 500, 600, arcade.color.BLUE_SAPPHIRE)
+        arcade.draw_rectangle_filled(307, 50, 600, 70, arcade.color.BRONZE)
+        arcade.draw_rectangle_filled(307, 150, 500, 70, arcade.color.BRONZE)
+        arcade.draw_rectangle_filled(307, 250, 400, 70, arcade.color.BRONZE)
+        arcade.draw_rectangle_filled(307, 350, 300, 70, arcade.color.BRONZE)
 
+        arcade.draw_rectangle_filled(400, 550, 400, 300, arcade.color.BLUE_BELL)
         
 
     def update(self, delta_time):
@@ -43,14 +45,19 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, key_modifiers):
         print(key, key_modifiers)
-        if key == arcade.key.D:
-            self.player.change_x = 1
-
+        if key == arcade.key.UP:
+            self.player_sprite.change_y = MOVEMENT_SPEED
+        elif key == arcade.key.DOWN:
+            self.player_sprite.change_y = -MOVEMENT_SPEED
+        elif key == arcade.key.LEFT:
+            self.player_sprite.change_x = -MOVEMENT_SPEED
+        elif key == arcade.key.RIGHT:
+            self.player_sprite.change_x = MOVEMENT_SPEED
     def on_key_release(self, key, key_modifiers):
         """
         Called whenever the user lets off a previously pressed key.
         """
-        pass
+        pass\
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         """
@@ -79,10 +86,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    """
-    from utils import FakeDirector
-    window = arcade.Window(settings.WIDTH, settings.HEIGHT)
-    my_view = Chapter1View()
-    my_view.director = FakeDirector(close_on_next_view=True)
-    window.show_view(my_view)
-    arcade.run()
