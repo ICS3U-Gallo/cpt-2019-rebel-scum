@@ -1,16 +1,42 @@
 import arcade
 import settings
 
-starcount = 50
-self.star_sprite_list = None
+
+class Star(arcade.sprite):
+
+    def reset_pos(self):
+        self.centre_y = random.randrange(settings.HEIGHT)
+        self.centre_x = random.randrange(settings.WIDTH - 20)
+    
+    def update(self):
+        self.centre_x += 1
+
+        if self.top < 0:
+            self.reset_pos()
 
 
 class MenuView(arcade.View):
+
+    def init(self):
+        starcount = 50
+        self.star_sprite_list = None
+        self.coin_sprite_list = None
+
+        self.coin_sprite = None
+
+    
     def on_show(self):
         arcade.set_background_color(arcade.color.BLACK)
 
     def setup(self):
         self.star_sprite_list = arcade.SpriteList()
+        self.coin_sprite_list = arcade.SpriteList()
+
+        self.coin_sprite = arcade.Sprite(":resources:images/items/coinGOLD.png"
+                                         , SPRITE_SCALING_COIN)
+        self.coin_sprite.center_x = 50
+        self.coin_sprite.centre_y = 50
+        self.player_sprite_list.append(self.player_sprite)
 
         for i in range(starcount):
             star = arcade.draw_circle_filled(star.center_x, star.center_y, 10,
@@ -20,20 +46,23 @@ class MenuView(arcade.View):
             star.centre_y = random.randrange(settings.HEIGHT)
 
             self.star_sprite_list.append(star)
-
-    def update(self):
-        star.centre_x += 1
-
-        if star.centre_x > settings.WIDTH:
-            star.centre_x = 0
-
+    
     def on_draw(self):
         arcade.start_render()
         self.star_sprite_list.draw()
+        self.coin_sprite_list.draw()
 
         arcade.draw_texture_rectangle(settings.WIDTH/2, settings.HEIGHT/2,
                                       settings.WIDTH-100, settings.HEIGHT-200,
                                       alvares/starwars/Star_Wars_Logo.png)
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        self.coin_sprite.centre_x = x
+        self.coin_sprite.centre_y = y
+
+    def update(self):
+        
+        self.star_sprite_list.update()
 
     def on_key_press(self, key, modifiers):
         self.director.next_view()
