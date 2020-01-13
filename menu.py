@@ -55,6 +55,9 @@ class MenuView(arcade.View):
         arcade.draw_texture_rectangle(settings.WIDTH/2, settings.HEIGHT/2,
                                       settings.WIDTH-100, settings.HEIGHT-200,
                                       alvares/starwars/Star_Wars_Logo.png)
+        
+        arcade.draw_texture_rectangle(settings.WIDTH/2, settings.HEIGHT/2, 
+                                      settings.WIDTH, settings.HEIGHT - 300)
 
     def on_mouse_motion(self, x, y, dx, dy):
         self.coin_sprite.centre_x = x
