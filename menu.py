@@ -16,17 +16,13 @@ class Star(arcade.sprite):
 
 
 class MenuView(arcade.View):
-
-    def init(self):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.BLACK)
         starcount = 50
         self.star_sprite_list = None
         self.coin_sprite_list = None
 
         self.coin_sprite = None
-
-    
-    def on_show(self):
-        arcade.set_background_color(arcade.color.BLACK)
 
     def setup(self):
         self.star_sprite_list = arcade.SpriteList()
@@ -36,11 +32,10 @@ class MenuView(arcade.View):
                                          , SPRITE_SCALING_COIN)
         self.coin_sprite.center_x = 50
         self.coin_sprite.centre_y = 50
-        self.player_sprite_list.append(self.player_sprite)
+        self.coin_sprite_list.append(self.coin_sprite)
 
         for i in range(starcount):
-            star = arcade.draw_circle_filled(star.center_x, star.center_y, 10,
-                                             arcade.color.WHITE)
+            star = arcade.Sprite(star)
 
             star.centre_x = random.randrange(settings.WIDTH)
             star.centre_y = random.randrange(settings.HEIGHT)
@@ -49,6 +44,8 @@ class MenuView(arcade.View):
     
     def on_draw(self):
         arcade.start_render()
+        star = arcade.draw_circle_filled(star.center_x, star.center_y, 10,
+                                         arcade.color.WHITE)
         self.star_sprite_list.draw()
         self.coin_sprite_list.draw()
 
