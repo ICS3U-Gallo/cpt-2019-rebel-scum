@@ -3,9 +3,9 @@ import time
 import settings
 WIDTH = 800
 HEIGHT = 600
-title = "cantina"
 MOVEMENT_SPEED = 15
 holding_glass = False
+current_screen = 1
 
 class Player(arcade.Sprite):
 
@@ -42,6 +42,8 @@ class Player(arcade.Sprite):
         if self.center_y >= 350:
             self.center_y = 350
 
+class Customer(arcade.Sprite):
+    pass
 
 class Chapter1View(arcade.View):
     def __init__(self):
@@ -54,13 +56,27 @@ class Chapter1View(arcade.View):
                              center_x=700,
                              center_y=150,
                              scale=0.35)
+        
 
     def on_show(self):
         arcade.set_background_color(arcade.color.GRAY)
 
+
     def on_draw(self):
+        global current_screen
         arcade.start_render() 
 
+
+        if current_screen == 1:
+            self.menu_draw()
+        elif current_screen == 2:
+            self.game_draw()
+    def menu_draw(self):
+        arcade.set_background_color(arcade.color.BLACK)
+
+
+    def game_draw(self):
+        
         arcade.draw_triangle_filled(0, 0, 0, 600, 300, 600, arcade.color.BLUE_SAPPHIRE)
         arcade.draw_triangle_filled(800, 0, 800, 600, 500, 600, arcade.color.BLUE_SAPPHIRE)
 
@@ -72,7 +88,6 @@ class Chapter1View(arcade.View):
         arcade.draw_rectangle_filled(400, 550, 400, 300, arcade.color.BLUE_BELL)
         arcade.draw_rectangle_filled(400, 510, 200, 100, arcade.color.BABY_BLUE_EYES)
         self.player.draw()
-
     def update(self, delta_time):
 
         self.player.update()
@@ -88,14 +103,20 @@ class Chapter1View(arcade.View):
         elif key == arcade.key.RIGHT:
             self.player.change_x = MOVEMENT_SPEED
         
-        
     def on_key_release(self, key, key_modifiers):
-
+        global current_screen
         if key == arcade.key.UP or key == arcade.key.DOWN:
             self.player.change_y = 0
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player.change_x = 0
-
+        if key == arcade.key.SPACE and self.player.center_x == 740 and self.player.center_y == 50:
+            self.holding_glass = True
+            print(self.holding_glass)
+        while current_screen <= 2:
+            if key == arcade.key.ENTER:
+                current_screen += 1
+            on_draw()
+        print(current_screen)
 
 if __name__ == "__main__":    
     from utils import FakeDirector
