@@ -1,9 +1,11 @@
 import arcade
-
+import time
+import settings
 WIDTH = 800
 HEIGHT = 600
-MOVEMENT_SPEED = 8
-SPRITE_SCALING = 0.5
+title = "cantina"
+MOVEMENT_SPEED = 15
+holding_glass = False
 
 class Player(arcade.Sprite):
 
@@ -11,45 +13,64 @@ class Player(arcade.Sprite):
         self.center_x += self.change_x
         self.center_y += self.change_y
 
-        if self.left < 0:
-            self.left = 0
-        elif self.right > WIDTH - 1:
-            self.right = WIDTH - 1
+        if self.center_x <= 630 and self.center_y == 50:
+            self.center_x = 630
 
-        if self.bottom < 0:
-            self.bottom = 0
-        elif self.top > HEIGHT - 1:
-            self.top = HEIGHT - 1
+        if self.center_x >= 740 and self.center_y == 50:
+            self.center_x = 740
+
+        if self.center_x <= 580 and self.center_y == 150:
+            self.center_x = 580
+
+        if self.center_x >= 700 and self.center_y == 150:
+            self.center_x = 700
+
+        if self.center_x <= 530 and self.center_y == 250:
+            self.center_x = 530
+        
+        if self.center_x >= 650 and self.center_y == 250:
+            self.center_x = 650
+
+        if self.center_x <= 480 and self.center_y == 350:
+            self.center_x = 480
+
+        if self.center_x >= 630 and self.center_y == 350:
+            self.center_x = 630
+
+        if self.center_y <= 50:
+            self.center_y = 50
+        if self.center_y >= 350:
+            self.center_y = 350
 
 
-class MyGame(arcade.Window):
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
+class Chapter1View(arcade.View):
+    def __init__(self):
+        super().__init__()
         self.player_list = None
-        self.player_sprite = None
 
         arcade.set_background_color(arcade.color.GRAY)
-
-    def setup(self):
         self.player_list = arcade.SpriteList()
+        self.player = Player(filename="images/tend.png",
+                             center_x=700,
+                             center_y=150,
+                             scale=0.35)
 
-        self.player = arcade.Sprite(filename="white.png",
-                                    center_x=700,
-                                    center_y=150,
-                                    scale=0.5)
-
+    def on_show(self):
+        arcade.set_background_color(arcade.color.GRAY)
 
     def on_draw(self):
         arcade.start_render() 
 
         arcade.draw_triangle_filled(0, 0, 0, 600, 300, 600, arcade.color.BLUE_SAPPHIRE)
         arcade.draw_triangle_filled(800, 0, 800, 600, 500, 600, arcade.color.BLUE_SAPPHIRE)
-        arcade.draw_rectangle_filled(307, 50, 600, 70, arcade.color.BRONZE)
-        arcade.draw_rectangle_filled(307, 150, 500, 70, arcade.color.BRONZE)
-        arcade.draw_rectangle_filled(307, 250, 400, 70, arcade.color.BRONZE)
-        arcade.draw_rectangle_filled(307, 350, 300, 70, arcade.color.BRONZE)
+
+        arcade.draw_rectangle_filled(310, 50, 600, 60, arcade.color.BRONZE)
+        arcade.draw_rectangle_filled(310, 150, 500, 60, arcade.color.BRONZE)
+        arcade.draw_rectangle_filled(310, 250, 400, 60, arcade.color.BRONZE)
+        arcade.draw_rectangle_filled(310, 350, 300, 60, arcade.color.BRONZE)
 
         arcade.draw_rectangle_filled(400, 550, 400, 300, arcade.color.BLUE_BELL)
+        arcade.draw_rectangle_filled(400, 510, 200, 100, arcade.color.BABY_BLUE_EYES)
         self.player.draw()
 
     def update(self, delta_time):
@@ -66,6 +87,8 @@ class MyGame(arcade.Window):
             self.player.change_x = -MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player.change_x = MOVEMENT_SPEED
+        
+        
     def on_key_release(self, key, key_modifiers):
 
         if key == arcade.key.UP or key == arcade.key.DOWN:
@@ -73,24 +96,11 @@ class MyGame(arcade.Window):
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player.change_x = 0
 
-    def on_mouse_motion(self, x, y, delta_x, delta_y):
 
-        pass
-
-    def on_mouse_press(self, x, y, button, key_modifiers):
-
-        pass
-
-    def on_mouse_release(self, x, y, button, key_modifiers):
-
-        pass
-
-
-def main():
-    game = MyGame(WIDTH, HEIGHT, "My Game")
-    game.setup()
+if __name__ == "__main__":    
+    from utils import FakeDirector
+    window = arcade.Window(settings.WIDTH, settings.HEIGHT)
+    my_view = Chapter1View()
+    my_view.director = FakeDirector(close_on_next_view=True)
+    window.show_view(my_view)
     arcade.run()
-
-
-if __name__ == "__main__":
-    main()
