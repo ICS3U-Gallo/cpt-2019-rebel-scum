@@ -17,8 +17,11 @@ class Star(arcade.sprite):
 
 class MenuView(arcade.View):
     def on_show(self):
-        arcade.set_background_color(arcade.color.BLACK)
+        arcade.draw_texture_rectangle(settings.WIDTH/2, settings.HEIGHT/2, 
+                                      settings.WIDTH, settings.HEIGHT, 
+                                      "images/maxresdefault.jpg")
         starcount = 50
+        SPRITE_SCALING_COIN = 5
         self.star_sprite_list = None
         self.coin_sprite_list = None
 
@@ -28,7 +31,7 @@ class MenuView(arcade.View):
         self.star_sprite_list = arcade.SpriteList()
         self.coin_sprite_list = arcade.SpriteList()
 
-        self.coin_sprite = arcade.Sprite(":resources:images/items/coinGOLD.png"
+        self.coin_sprite = arcade.Sprite("images/insert-coin-png-12 (1).png"
                                          , SPRITE_SCALING_COIN)
         self.coin_sprite.center_x = 50
         self.coin_sprite.centre_y = 50
