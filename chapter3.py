@@ -46,9 +46,8 @@ class Chapter2View(arcade.View):
         self.enemy_list.draw()
         self.laser_list.draw()
         self.player_list.draw()
-
-        output = f"Score: {self.score}"
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
+        
+        arcade.draw_text(f"Score: {self.score}", 10, 20, arcade.color.WHITE, 14)
 
     def on_update(self, delta_time):
 
