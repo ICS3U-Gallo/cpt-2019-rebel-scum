@@ -35,7 +35,7 @@ class Chapter2View(arcade.View):
         self.enemy_list.append(enemy)
 
         
-        enemy = arcade.Sprite(":resources:images/space_shooter/playerShip1_green.png", 0.5)
+        enemy = arcade.Sprite("images/drone.png", 0.5)
         enemy.center_x = settings_WIDTH - 120
         enemy.center_y = settings_HEIGHT - enemy.height
         enemy.angle = 180
