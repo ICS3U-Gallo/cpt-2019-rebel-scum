@@ -67,7 +67,7 @@ class MenuView(arcade.View):
         
         self.star_sprite_list.update()
 
-    def on_key_press(self, key, modifiers):
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
         self.director.next_view()
 
 
