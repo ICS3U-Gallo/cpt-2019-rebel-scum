@@ -8,6 +8,8 @@ HEIGHT = 600
 MOVEMENT_SPEED = 30
 frm_count = 0
 score = 0
+
+
 class Player(arcade.Sprite):
 
     def update(self):
@@ -28,7 +30,7 @@ class Player(arcade.Sprite):
 
         if self.center_x <= 530 and self.center_y == 250:
             self.center_x = 530
-        
+
         if self.center_x >= 650 and self.center_y == 250:
             self.center_x = 650
 
@@ -43,7 +45,9 @@ class Player(arcade.Sprite):
         if self.center_y >= 350:
             self.center_y = 350
 
+
 class Customer():
+
     def __init__(self, center_x, center_y, change_x, change_y):
         self.center_x = center_x
         self.center_y = center_y
@@ -52,6 +56,7 @@ class Customer():
 
     def game_over(self):
         pass
+
     def update(self):
         self.center_x += self.change_x
         self.center_y += 0
@@ -62,10 +67,11 @@ class Customer():
         if self.center_y == 285 and self.center_x >= 530:
             self.center_x = 530
         if self.center_y == 385 and self.center_x >= 480:
-            self.center_x = 480 
+            self.center_x = 480
 
     def draw(self):
         arcade.draw_rectangle_filled(self.center_x, self.center_y, 30, 70, arcade.color.BABY_BLUE_EYES)
+
 
 class Glass():
     def __init__(self, center_x, center_y, change_x, change_y):
@@ -73,7 +79,9 @@ class Glass():
         self.center_y = center_y
         self.change_x = change_x
         self.change_y = change_y
+
     def update(self, x2, y2):
+
         print(x2, self.center_x, "x2")
         self.center_x += self.change_x
         self.center_y += 0
@@ -105,7 +113,7 @@ class Chapter1View(arcade.View):
         # self.customer_list = arcade.SpriteList
         # self.customer_list.append(self, self.luke)
         global customers
-        self.holding_glass = False 
+        self.holding_glass = False
         customers = []
         self.glass = Glass(600, 90, 5, 0)
 
@@ -140,19 +148,16 @@ class Chapter1View(arcade.View):
         for glass in self.glasses:
             glass.draw()
 
-
     def update(self, delta_time):
+
         global frm_count
         self.player.update()
         if frm_count % 300 == 0:
             pos = [[-70, 70], [-70, 170], [-70, 70], [-70, 370]]
             idx = random.randrange(4)
             customers.append(Customer(pos[idx][0], pos[idx][1], 3, 0))
-
-
         for customer in customers:
             customer.update()
-
         pos = [[-70, 70], [-70, 170], [-70, 270], [-70, 370]]
         frm_count += 1
         for i in range(3):
@@ -162,7 +167,7 @@ class Chapter1View(arcade.View):
 
         for glass in self.glasses[:]:
             for customer in customers:
-                result =  glass.update(customer.center_x, customer.center_y)
+                result = glass.update(customer.center_x, customer.center_y)
                 if result == "hit":
                     print("hit")
                     customer.change_x *= -1
@@ -182,7 +187,7 @@ class Chapter1View(arcade.View):
             self.player.change_x = -MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player.change_x = MOVEMENT_SPEED
-        
+
     def on_key_release(self, key, key_modifiers):
         if key == arcade.key.UP or key == arcade.key.DOWN:
             self.player.change_y = 0
@@ -201,7 +206,7 @@ class Chapter1View(arcade.View):
             self.holding_glass = True
             print(self.holding_glass)
 
-        if key == arcade.key.SPACE and self.player.center_x == 630 and self.player.center_y == 50 :
+        if key == arcade.key.SPACE and self.player.center_x == 630 and self.player.center_y == 50:
             if self.holding_glass == True:
                 self.holding_glass = False
                 self.glasses.append(Glass(630, 70, -5, 0))
@@ -218,10 +223,10 @@ class Chapter1View(arcade.View):
                 self.holding_glass = False
                 self.glasses.append(Glass(480, 370, -5, 0))
 
-# pos = [[-70, 70], [-70, 170], [-70, 70], [-70, 370]]        
+# pos = [[-70, 70], [-70, 170], [-70, 70], [-70, 370]]
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     from utils import FakeDirector
     window = arcade.Window(settings.WIDTH, settings.HEIGHT)
     my_view = Chapter1View()
