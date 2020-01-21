@@ -2,12 +2,12 @@ import arcade
 import time
 import settings
 import random
+import sys
 WIDTH = 800
 HEIGHT = 600
 MOVEMENT_SPEED = 30
-holding_glass = False
 frm_count = 0
-customer_num = 10
+score = 0
 class Player(arcade.Sprite):
 
     def update(self):
@@ -73,12 +73,19 @@ class Glass():
         self.center_y = center_y
         self.change_x = change_x
         self.change_y = change_y
-    def update(self):
+    def update(self, x2, y2):
+        print(x2, self.center_x, "x2")
         self.center_x += self.change_x
         self.center_y += 0
+        if (self.center_x - x2) < 10 and self.center_y == y2:
+            return "hit"
+        elif self.center_x <= 0:
+            return "del"
+        else:
+            return "miss"
 
     def draw(self):
-        arcade.draw_rectangle_filled(self.center_x, self.center_y, 20, 60, arcade.color.WHITE)
+        arcade.draw_rectangle_filled(self.center_x, self.center_y, 50, 50, arcade.color.WHITE)
 
 
 class Chapter1View(arcade.View):
@@ -93,16 +100,14 @@ class Chapter1View(arcade.View):
                              center_y=150,
                              scale=0.35)
         self.player_list.append(self.player)
+        self.glasses = []
         # self.luke = arcade.Sprite("images/Luke.png")
         # self.customer_list = arcade.SpriteList
         # self.customer_list.append(self, self.luke)
-        global customers 
+        global customers
+        self.holding_glass = False 
         customers = []
-        pos = [[-70, 70], [-70, 170], [-70, 70], [-70, 370]]
-        for i in range(3):
-            idx = random.randrange(3)
-            customers.append(Customer(pos[idx][0], pos[idx][1], 3, 0))
-        self.glass = Glass(50, 50, 5, 0)
+        self.glass = Glass(600, 90, 5, 0)
 
         # self.customer = Customer(filename=customer_sprites[random.randrange(5)],
         #                         center_x = -70,
@@ -115,7 +120,7 @@ class Chapter1View(arcade.View):
         global customers
         global frm_count
         arcade.start_render()
-        print(frm_count)
+        # print(frm_count)
         for customer in customers:
             customer.draw()
         arcade.draw_triangle_filled(0, 0, 0, 600, 300, 600, arcade.color.BLUE_SAPPHIRE)
@@ -126,11 +131,25 @@ class Chapter1View(arcade.View):
         arcade.draw_rectangle_filled(310, 150, 500, 60, arcade.color.BRONZE)
         arcade.draw_rectangle_filled(310, 250, 400, 60, arcade.color.BRONZE)
         arcade.draw_rectangle_filled(310, 350, 300, 60, arcade.color.BRONZE)
+        arcade.draw_rectangle_filled(780, 50, 70, 60, arcade.color.BROWN_NOSE)
+        arcade.draw_rectangle_filled(740, 150, 70, 60, arcade.color.BROWN_NOSE)
+        arcade.draw_rectangle_filled(700, 250, 70, 60, arcade.color.BROWN_NOSE)
+        arcade.draw_rectangle_filled(650, 350, 70, 60, arcade.color.BROWN_NOSE)
         self.player.draw()
+        # self.glass.draw()
+        for glass in self.glasses:
+            glass.draw()
+
 
     def update(self, delta_time):
         global frm_count
         self.player.update()
+        if frm_count % 300 == 0:
+            pos = [[-70, 70], [-70, 170], [-70, 70], [-70, 370]]
+            idx = random.randrange(4)
+            customers.append(Customer(pos[idx][0], pos[idx][1], 3, 0))
+
+
         for customer in customers:
             customer.update()
 
@@ -140,7 +159,18 @@ class Chapter1View(arcade.View):
             idx = random.randrange(3)
         if frm_count % 100 == 0:
             customers.append(Customer(pos[idx][0], pos[idx][1], 3, 4))
-        
+
+        for glass in self.glasses[:]:
+            for customer in customers:
+                result =  glass.update(customer.center_x, customer.center_y)
+                if result == "hit":
+                    print("hit")
+                    customer.change_x *= -1
+                    self.glasses.remove(glass)
+                    break
+                elif result == "del":
+                    print("del")
+                    self.glasses.remove(glass)
 
     def on_key_press(self, key, key_modifiers):
         print(key, key_modifiers)
@@ -171,21 +201,26 @@ class Chapter1View(arcade.View):
             self.holding_glass = True
             print(self.holding_glass)
 
-        if key == arcade.key.SPACE and self.player.center_x == 630 and self.player.center_y == 50:
-            self.holding_glass = False
-            if self.holding_glass == False and self.player.center_x == 630 and self.player.center_y == 50 and self.customer_y == 50:
-                self.customer.center_x += -self.customer.change_x
-            print(self.holding_glass)
+        if key == arcade.key.SPACE and self.player.center_x == 630 and self.player.center_y == 50 :
+            if self.holding_glass == True:
+                self.holding_glass = False
+                self.glasses.append(Glass(630, 70, -5, 0))
         elif key == arcade.key.SPACE and self.player.center_x == 580 and self.player.center_y == 150:
-            self.holding_glass = False
-            print(self.holding_glass)
+            if self.holding_glass == True:
+                self.holding_glass = False
+                self.glasses.append(Glass(580, 170, -5, 0))
         elif key == arcade.key.SPACE and self.player.center_x == 530 and self.player.center_y == 250:
-            self.holding_glass = False
-            print(self.holding_glass)
+            if self.holding_glass == True:
+                self.holding_glass = False
+                self.glasses.append(Glass(530, 270, -5, 0))
         elif key == arcade.key.SPACE and self.player.center_x == 480 and self.player.center_y == 350:
-            self.holding_glass = False
-            print(self.holding_glass)
-        
+            if self.holding_glass == True:
+                self.holding_glass = False
+                self.glasses.append(Glass(480, 370, -5, 0))
+
+# pos = [[-70, 70], [-70, 170], [-70, 70], [-70, 370]]        
+
+
 if __name__ == "__main__":    
     from utils import FakeDirector
     window = arcade.Window(settings.WIDTH, settings.HEIGHT)
@@ -193,4 +228,3 @@ if __name__ == "__main__":
     my_view.director = FakeDirector(close_on_next_view=True)
     window.show_view(my_view)
     arcade.run()
-
