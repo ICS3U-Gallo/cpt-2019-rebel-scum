@@ -90,12 +90,12 @@ class Chapter2View(arcade.View):
 
         self.laser_list.update()
 
-        #hit_list = arcade.check_for_collision_with_list(self.player,
-                                                        #self.laser_list)
+        hit_list = arcade.check_for_collision_with_list(self.player,
+                                                        self.laser_list)
 
-        #for laser in hit_list:
-            #laser.remove_from_sprite_lists()
-            #self.score += 1
+        for laser in hit_list:
+            laser.remove_from_sprite_lists()
+            self.time = 3600
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         
