@@ -25,16 +25,16 @@ class Chapter2View(arcade.View):
         self.laser_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
         self.enemy_list = arcade.SpriteList()
-        self.player = arcade.Sprite("/home/robuntu/alvares/starwar/cpt-2019-rebel-scum-master/images/luke.png", 0.2)
+        self.player = arcade.Sprite("images/luke.png", 0.2)
         self.player_list.append(self.player)
         
-        enemy = arcade.Sprite("/home/robuntu/alvares/starwar/cpt-2019-rebel-scum-master/images/drone.png", 0.5)
+        enemy = arcade.Sprite("images/drone.png", 0.5)
         enemy.center_x = 120
         enemy.center_y = settings.HEIGHT - enemy.height
         enemy.angle = 180
         self.enemy_list.append(enemy)
 
-        enemy = arcade.Sprite("/home/robuntu/alvares/starwar/cpt-2019-rebel-scum-master/images/drone.png", 0.5)
+        enemy = arcade.Sprite("images/drone.png", 0.5)
         enemy.center_x = settings.WIDTH - 120
         enemy.center_y = settings.HEIGHT - enemy.height
         enemy.angle = 180
