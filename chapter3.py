@@ -5,9 +5,10 @@ import math
 
 LASER_SPEED = 4
 
+
 class Chapter2View(arcade.View):
     def on_show(self):
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.BLACK)
 
         self.frame_count = 0
 
@@ -16,28 +17,26 @@ class Chapter2View(arcade.View):
         self.player_list = None
         self.player = None
         self.score = 0
+        self.time = 3600
         self.setup()
 
     def setup(self):
         self.drone_list = arcade.SpriteList()
         self.laser_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
-        self.score = 0
-
-        self.player = arcade.Sprite("images/luke.png", 1)
+        self.enemy_list = arcade.SpriteList()
+        self.player = arcade.Sprite("/home/robuntu/alvares/starwar/cpt-2019-rebel-scum-master/images/luke.png", 0.2)
         self.player_list.append(self.player)
-
         
-        enemy = arcade.Sprite("images/drone.png", 0.5)
+        enemy = arcade.Sprite("/home/robuntu/alvares/starwar/cpt-2019-rebel-scum-master/images/drone.png", 0.5)
         enemy.center_x = 120
-        enemy.center_y = settings_HEIGHT - enemy.height
+        enemy.center_y = settings.HEIGHT - enemy.height
         enemy.angle = 180
         self.enemy_list.append(enemy)
 
-        
-        enemy = arcade.Sprite("images/drone.png", 0.5)
-        enemy.center_x = settings_WIDTH - 120
-        enemy.center_y = settings_HEIGHT - enemy.height
+        enemy = arcade.Sprite("/home/robuntu/alvares/starwar/cpt-2019-rebel-scum-master/images/drone.png", 0.5)
+        enemy.center_x = settings.WIDTH - 120
+        enemy.center_y = settings.HEIGHT - enemy.height
         enemy.angle = 180
         self.enemy_list.append(enemy)
 
@@ -47,11 +46,14 @@ class Chapter2View(arcade.View):
         self.laser_list.draw()
         self.player_list.draw()
         
-        arcade.draw_text(f"Score: {self.score}", 10, 20, arcade.color.WHITE, 14)
+        arcade.draw_text(f"Time: {self.time//60}", 10, 20, arcade.color.WHITE, 
+                         14)
 
     def on_update(self, delta_time):
 
         self.frame_count += 1
+
+        self.time = self.time - 1
 
         for enemy in self.enemy_list:
             start_x = enemy.center_x
@@ -88,25 +90,20 @@ class Chapter2View(arcade.View):
 
         self.laser_list.update()
 
-        hit_list = arcade.check_for_collision_with_list(self.player_sprite,
-                                                        self.laser_list)
-        for laser in hit_list:
-            laser.remove_from_sprite_lists()
-            self.score += 1
+        #hit_list = arcade.check_for_collision_with_list(self.player,
+                                                        #self.laser_list)
+
+        #for laser in hit_list:
+            #laser.remove_from_sprite_lists()
+            #self.score += 1
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         
         self.player.center_x = x
         self.player.center_y = y
 
-
-def on_mouse_motion(self, x, y, delta_x, delta_y):
-    
-    self.player.center_x = x
-    self.player.center_y = y
-
     def on_key_press(self, key, modifiers):
-        if self.score == 5:
+        if self.time == 0:
             self.director.next_view()
 
 
