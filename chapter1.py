@@ -143,10 +143,12 @@ class Chapter1View(arcade.View):
         arcade.draw_rectangle_filled(740, 150, 70, 60, arcade.color.BROWN_NOSE)
         arcade.draw_rectangle_filled(700, 250, 70, 60, arcade.color.BROWN_NOSE)
         arcade.draw_rectangle_filled(650, 350, 70, 60, arcade.color.BROWN_NOSE)
+        
         self.player.draw()
         # self.glass.draw()
         for glass in self.glasses:
             glass.draw()
+        arcade.draw_text("press x to move on", 20, 580, arcade.color.WHITE, 12)
 
     def update(self, delta_time):
 
@@ -222,6 +224,8 @@ class Chapter1View(arcade.View):
             if self.holding_glass == True:
                 self.holding_glass = False
                 self.glasses.append(Glass(480, 370, -5, 0))
+            if key == arcade.key.X:
+                self.director.next_view()
 
 # pos = [[-70, 70], [-70, 170], [-70, 70], [-70, 370]]
 
